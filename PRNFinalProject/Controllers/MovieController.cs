@@ -35,7 +35,7 @@ namespace PRNFinalProject.Controllers
         public IActionResult Edit(int Id)
         {
             ViewData["Genres"] = new SelectList(_context.Genres, "GenreId", "Description");
-            Movie movie = _context.Movies.Where(m => m.MovieId == Id).FirstOrDefault();
+            Movie movie = _context.Movies.Include(m => m.Genre).Where(m => m.MovieId == Id).FirstOrDefault();
             return View(movie);
         }
 
@@ -51,7 +51,7 @@ namespace PRNFinalProject.Controllers
 
         public IActionResult Delete(int Id)
         {
-            Movie movie = _context.Movies.Where(m => m.MovieId == Id).FirstOrDefault();
+            Movie movie = _context.Movies.Include(m => m.Genre).Where(m => m.MovieId == Id).FirstOrDefault();
             return View(movie);
         }
 
@@ -60,6 +60,25 @@ namespace PRNFinalProject.Controllers
         {
             _context.Attach(movie);
             _context.Entry(movie).State = EntityState.Deleted;
+            _context.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+        public IActionResult Create()
+        {
+            ViewData["Genres"] = new SelectList(_context.Genres, "GenreId", "Description");
+            Movie movie = new Movie();
+            return View(movie);
+        }
+
+        [HttpPost]
+        public IActionResult Create(Movie movie)
+        {
+            ViewData["Genres"] = new SelectList(_context.Genres, "GenreId", "Description");
+            var id = _context.Movies.Max(m => m.MovieId);
+            movie.MovieId = id;
+            _context.Attach(movie);
+            _context.Entry(movie).State = EntityState.Added;
             _context.SaveChanges();
             return RedirectToAction("Index");
         }

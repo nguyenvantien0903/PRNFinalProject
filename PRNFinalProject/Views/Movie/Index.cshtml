@@ -36,6 +36,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.Genre)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Rates)
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -67,7 +70,8 @@
                         tempData += (double)item2.NumericRating;
                         cnt += 1;
                     }
-                    <p>@tempData</p>
+                    double res = tempData / cnt;
+                    <p>@res</p>
                  }
             </td>
             <td>
