@@ -30,7 +30,10 @@ namespace PRNFinalProject.Controllers
             if(checklogin != null)
             {
                 Person account = context.Persons.FirstOrDefault(x => x.Email.Equals(person.Email) && x.Password.Equals(person.Password));
-                HttpContext.Session.SetString("account", JsonConvert.SerializeObject(account));
+                if(account.IsActive == false)
+                {
+                    return RedirectToAction("Index", "Home");
+                }
                 if(account.Type == 1)
                 {
                     HttpContext.Session.SetString("admin", "true");
@@ -39,6 +42,7 @@ namespace PRNFinalProject.Controllers
                 {
                     HttpContext.Session.SetString("user", "true");
                 }
+                HttpContext.Session.SetString("account", JsonConvert.SerializeObject(account));
                 return RedirectToAction("Index", "Home");
             }
             else

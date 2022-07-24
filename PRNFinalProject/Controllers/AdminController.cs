@@ -24,7 +24,11 @@ namespace PRNFinalProject.Controllers
             this.c = c;
         }
         public IActionResult Index()
-        { 
+        {
+            if (HttpContext.Session.GetString("admin") == null)
+            {
+                return RedirectToAction("Login","Security");
+            }
             MovieManager movieManagement = new MovieManager();
             ViewBag.Movie = movieManagement.GetAllMovie();
             PersonManager PersonManagement = new PersonManager();
@@ -34,6 +38,10 @@ namespace PRNFinalProject.Controllers
        // Admin/Rate
         public IActionResult Rate()
         {
+            if (HttpContext.Session.GetString("admin") == null)
+            {
+                return RedirectToAction("Login", "Security");
+            }
             MovieManager movieManagement = new MovieManager();
             ViewBag.Movie = movieManagement.GetAllMovie();
             PersonManager PersonManagement = new PersonManager();
@@ -54,7 +62,7 @@ namespace PRNFinalProject.Controllers
             }
             else
             {//trả về trang login
-                return RedirectToAction("Login", "Home");
+                return RedirectToAction("Login", "Security");
             }
           
             //list tổng quan
@@ -69,6 +77,10 @@ namespace PRNFinalProject.Controllers
         [HttpPost]
         public IActionResult ListUser(string statusid)
         {
+            if (HttpContext.Session.GetString("admin") == null)
+            {
+                return RedirectToAction("Login", "Security");
+            }
             string[] n = statusid.Split('-');
             //list tổng quan
 
@@ -89,6 +101,10 @@ namespace PRNFinalProject.Controllers
         }
         public IActionResult ListMovie()
         {
+            if (HttpContext.Session.GetString("admin") == null)
+            {
+                return RedirectToAction("Login", "Security");
+            }
             //check session
             if (HttpContext.Session.GetString("admin") != null)
             {
@@ -99,7 +115,7 @@ namespace PRNFinalProject.Controllers
             }
             else
             {//trả về trang login
-                return RedirectToAction("Login", "Home");
+                return RedirectToAction("Login", "Security");
             }
             //list tổng quan
             ViewData["tgen"] = c.Genres.Count();
@@ -114,6 +130,10 @@ namespace PRNFinalProject.Controllers
         [HttpPost]
         public IActionResult ListMovie(string ids)
         {
+            if (HttpContext.Session.GetString("admin") == null)
+            {
+                return RedirectToAction("Login", "Security");
+            }
             //check session
             if (HttpContext.Session.GetString("admin") != null)
             {
@@ -142,7 +162,7 @@ namespace PRNFinalProject.Controllers
             }
             else
             {//trả về trang login
-                return RedirectToAction("Login", "Home");
+                return RedirectToAction("Login", "Security");
             }
             //list tổng quan
             ViewData["tgen"] = c.Genres.Count();
@@ -165,7 +185,7 @@ namespace PRNFinalProject.Controllers
             }
             else
             {//trả về trang login
-                return RedirectToAction("Login", "Home");
+                return RedirectToAction("Login", "Security");
             }
             c.Genres.Add(new Models.Genre { Description = des });
             c.SaveChanges();

@@ -4,6 +4,7 @@ using PRNFinalProject.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNetCore.Http;
 using System.Threading.Tasks;
 
 namespace PRNFinalProject.Logics
@@ -71,6 +72,14 @@ namespace PRNFinalProject.Logics
             }
         }
 
+        /*public List<Movie> SearchMovie()
+        {
+            using (var context = new CenimaDBContext())
+            {
+                string word = HttpRequest
+                return context.Movies.Where(m => m.Title.Contains(word)).ToList();
+            }
+        }*/
     }
 }
 
