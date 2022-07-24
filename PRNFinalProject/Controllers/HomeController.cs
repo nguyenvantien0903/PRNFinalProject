@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using PRNFinalProject.Logic;
 using PRNFinalProject.Models;
 using System;
 using System.Collections.Generic;
@@ -20,6 +21,8 @@ namespace PRNFinalProject.Controllers
 
         public IActionResult Index()
         {
+            MovieManagement movieManagement = new MovieManagement();
+            ViewBag.Movie = movieManagement.MovieList();
             return View();
         }
 
@@ -27,7 +30,10 @@ namespace PRNFinalProject.Controllers
         {
             return View();
         }
-
+        public IActionResult ListMovie()
+        {
+            return View();
+        }
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

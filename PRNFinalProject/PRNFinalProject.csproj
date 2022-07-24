@@ -6,6 +6,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\adminlte.min.css" />
+    <Content Remove="wwwroot\js\adminlte.min.js" />
+    <Content Remove="wwwroot\js\demo.js" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Include="AdminLTE-3.2.0\.github\codeql\codeql-config.yml" />
     <None Include="AdminLTE-3.2.0\.github\CONTRIBUTING.md" />
     <None Include="AdminLTE-3.2.0\.github\dependabot.yml" />
@@ -15,6 +21,9 @@
     <None Include="AdminLTE-3.2.0\.github\workflows\codeql.yml" />
     <None Include="AdminLTE-3.2.0\.github\workflows\docs.yml" />
     <None Include="AdminLTE-3.2.0\.github\workflows\lint.yml" />
+    <None Include="wwwroot\adminlte.min.css" />
+    <None Include="wwwroot\js\adminlte.min.js" />
+    <None Include="wwwroot\js\demo.js" />
   </ItemGroup>
 
   <ItemGroup>
