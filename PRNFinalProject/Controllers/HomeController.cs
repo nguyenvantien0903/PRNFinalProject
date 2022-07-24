@@ -16,6 +16,78 @@ namespace PRNFinalProject.Controllers
     public class HomeController : Controller
     {
 
+        public IActionResult Index(int Id, int Page)
+        {
+          
+            GenreManager genreManager = new GenreManager();
+            ViewBag.Genres = genreManager.GetAllGenres();
+        
+
+
+            MovieManager movieManager = new MovieManager();
+            List<Movie> movies = movieManager.GetAllMovie(Id);
+            /*List<Movie> movies = movieManager.GetMoives(Id, (Page - 1) * PageSize + 1, PageSize);*/
+
+
+            Dictionary<int, double> listr = new Dictionary<int, double>();
+            RateManager rateManager = new RateManager();
+            foreach (Movie m in movies)
+            {
+                List<Rate> rate = rateManager.GetRateByMovieId(m.MovieId);
+                double total = 0;
+                foreach (Rate item in rate)
+                {
+                    total += (double)item.NumericRating;
+                }
+                double NumericRating = total / rate.Count;
+                listr.Add(m.MovieId, NumericRating);
+            }
+            ViewBag.rates = listr;
+
+
+            //lay cac du lieu de hien thi dc thanh pager
+            /*int TotalMovie = movieManager.GetNumberOfMovies(Id);
+            int TotalPage = TotalMovie / PageSize;
+            if (TotalMovie % PageSize != 0) TotalPage++;
+            ViewData["TotalPage"] = TotalPage;
+            ViewData["CurrenPage"] = Page;
+            ViewData["CurrentGenre"] = Id;*/
+            return View(movies);
+        }
+
+        public IActionResult SearchMovie()
+        {
+            //lay danh sach tat ca cac genres
+            GenreManager genreManager = new GenreManager();
+            ViewBag.Genres = genreManager.GetAllGenres();
+            //lay danh sacsh theo genre
+
+
+            MovieManager movieManager = new MovieManager();
+            string search = Request.Form["search"];
+            List<Movie> movies = movieManager.SearchMovieByName(search);
+            /*List<Movie> movies = movieManager.GetMoives(Id, (Page - 1) * PageSize + 1, PageSize);*/
+
+
+            Dictionary<int, double> listr = new Dictionary<int, double>();
+            RateManager rateManager = new RateManager();
+            foreach (Movie m in movies)
+            {
+                List<Rate> rate = rateManager.GetRateByMovieId(m.MovieId);
+                double total = 0;
+                foreach (Rate item in rate)
+                {
+                    total += (double)item.NumericRating;
+                }
+                double NumericRating = total / rate.Count;
+                listr.Add(m.MovieId, NumericRating);
+            }
+            ViewBag.rates = listr;
+
+            return View("Index", movies);
+        }
+
+
         public IActionResult Privacy()
         {
             return View();
@@ -26,45 +98,6 @@ namespace PRNFinalProject.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
-        public IActionResult Index(int Id, int Page)
-        {
-            //lay danh sach tat ca cac genres
-            GenreManager genreManager = new GenreManager();
-            ViewBag.Genres = genreManager.GetAllGenres();
-            //lay danh sacsh theo genre
-            if (Page <= 0)
-                Page = 1;
-            int PageSize = 3;
 
-
-            MovieManager movieManager = new MovieManager();
-            List<Movie> movies = movieManager.GetMoives(Id, (Page - 1) * PageSize + 1, PageSize);
-
-
-            Dictionary<int, double> listr = new Dictionary<int, double>();
-            RateManager rateManager = new RateManager();
-            foreach(Movie m in movies)
-            {
-            List<Rate> rate = rateManager.GetRateByMovieId(m.MovieId);
-            double total = 0;
-            foreach (Rate item in rate)
-            {
-                total =(double)item.NumericRating;
-            }
-            double NumericRating = total / rate.Count;
-                listr.Add(m.MovieId, NumericRating);       
-            }
-            ViewBag.rates = listr;
-
-
-            //lay cac du lieu de hien thi dc thanh pager
-            int TotalMovie = movieManager.GetNumberOfMovies(Id);
-            int TotalPage = TotalMovie / PageSize;
-            if (TotalMovie % PageSize != 0) TotalPage++;
-            ViewData["TotalPage"] = TotalPage;
-            ViewData["CurrenPage"] = Page;
-            ViewData["CurrentGenre"] = Id;
-            return View(movies);
-        }
     }
 }

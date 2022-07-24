@@ -4,6 +4,7 @@
     ViewData["Title"] = "ListUser";
 }
 
+
 <h1>ListUser</h1>
 
 <p>
@@ -37,26 +38,38 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Fullname)
+                @item.Fullname
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Gender)
+                @item.Gender
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Email)
+                @item.Email
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Password)
+                @item.Password
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Type)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsActive)
-            </td>
-            <td>
-                <a asp-action="Details" asp-route-id="@item.PersonId">Details</a> |
-            </td>
+            @if (@item.Type == 1)
+            {
+                <td>
+                    Admin
+                </td>
+            }
+            else
+            {
+                <td>
+                    User
+                </td>
+            }
+
+        <td>
+            <div class="@item.IsActive">
+                <form asp-controller="Admin" asp-action="ListUser" method="post" class="tag tag-success">
+                    <input name="Id" type="hidden" value="@item.PersonId">
+                    <button type="submit" name="statusid" value="@item.IsActive">@(item.IsActive==true? "Enable" : "Disable")</button>
+                </form>
+            </div>
+        </td>
         </tr>
 }
     </tbody>

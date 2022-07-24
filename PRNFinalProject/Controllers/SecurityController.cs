@@ -27,11 +27,28 @@ namespace PRNFinalProject.Controllers
         public IActionResult Login(Person person)
         {
             var checklogin = context.Persons.Where(x => x.Email.Equals(person.Email) && x.Password.Equals(person.Password)).FirstOrDefault();
-            if(checklogin != null)
+            if (checklogin != null)
             {
-                Person account = context.Persons.FirstOrDefault(x => x.Email.Equals(person.Email) && x.Password.Equals(person.Password));
-                HttpContext.Session.SetString("account", JsonConvert.SerializeObject(account));
-                return RedirectToAction("Index", "Home");
+            Person account = context.Persons.FirstOrDefault(x => x.Email.Equals(person.Email) && x.Password.Equals(person.Password));
+            if (account.IsActive == true)
+            {
+                    if (account.Type == 1)
+                    {
+                        HttpContext.Session.SetString("account", JsonConvert.SerializeObject(account));
+                        return RedirectToAction("Admin", "Admin");
+                    }
+                    else
+                    {
+                        HttpContext.Session.SetString("account", JsonConvert.SerializeObject(account));
+                        return RedirectToAction("Index", "Home");
+                    }
+
+            }
+            else
+            {
+                ViewBag.Notification = "Your Account is Block";
+                return View();
+            }
             }
             else
             {
@@ -56,16 +73,18 @@ namespace PRNFinalProject.Controllers
             }
             else
             {
+                person.IsActive = true;
+                person.Type = 2;    
                 context.Persons.Add(person);
                 context.SaveChanges();
 
                 Person account = context.Persons.FirstOrDefault(x => x.Email.Equals(person.Email) && x.Password.Equals(person.Password));
-                HttpContext.Session.SetString("account", JsonConvert.SerializeObject(account));
+                //HttpContext.Session.SetString("account", JsonConvert.SerializeObject(account));
 
 
                 ViewData["username"] = HttpContext.Session.GetString("username");
-
-                return RedirectToAction("Index", "Home");
+                ViewBag.Notification = "Register succesfuly, go to login";
+                return View();
             }
         }
         public IActionResult Logout()

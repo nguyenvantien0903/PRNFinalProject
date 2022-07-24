@@ -1,4 +1,5 @@
-﻿@{
+﻿
+@{
     ViewData["Title"] = "Home Page";
 }
 @model List<Movie>
@@ -6,7 +7,7 @@
     <div class="row">
         <div class="col-12 col-sm-3">
             <div class="card bg-light mb-3">
-                <div class="card-header bg-primary text-white text-uppercase"><a href="/Home/Index"><i class="fa fa-list"></i>Thể Loại</a></div>
+                <div class="card-header text-white text-uppercase"><a href="/Home/Index"><i class="fa fa-list"></i>Thể Loại</a></div>
                 <ul class="list-group category_block">
                     @foreach (Genre g in ViewBag.Genres)
                     {
@@ -31,7 +32,9 @@
                     {
                         <div class="col-12 col-md-6 col-lg-4">
                             <div class="card">
-                                <img src="~/img/@item.Image" alt="Card image cap">
+                                <a asp-controller="Detail" asp-action="DetailMovie" asp-route-Id="@item.MovieId">
+                                    <img style="width:250px;height:250px" src="~/img/@item.Image" alt="Card image cap">
+                                </a>
                                 <div class="card-body">
                                     <h4 class="card-title"><a asp-area="" asp-controller="Detail" asp-action="DetailMovie" asp-route-Id="@item.MovieId" title="View Product">@item.Title</a></h4>
                                     <p class="card-text">Năm: @item.Year</p>
@@ -41,10 +44,9 @@
                                         <p class="card-text">Điểm: @ViewBag.rates[item.MovieId]</p>
                                     }
 
-
                                     <div class="row">
                                         <div class="col">
-                                            <a class="nav-link btn btn-success btn-block">Đánh giá</a>
+                                            <a asp-controller="Detail" asp-action="DetailMovie" asp-route-Id="@item.MovieId" class="nav-link btn btn-success btn-block">Đánh giá</a>
                                         </div>
                                     </div>
                                 </div>
@@ -53,20 +55,19 @@
                     }
                 }
             </div>
-            @if ((int)ViewData["TotalPage"] > 1)
-            {
-                <div style="border-radius:10px;">
-                    @for (int i = 1; i <= (int)ViewData["TotalPage"]; i++)
-                    {
-                        <a class='@((int)ViewData["CurrenPage"] == i ? "active":"")' href='/Home/Index/@ViewData["CurrentGenre"]/@i'>
-                            @i
-                        </a>
-                    }
-                </div>
-            }
+            @*@if ((int)ViewData["TotalPage"] > 1)
+                {
+                    <div style="border-radius:10px;">
+                        @for (int i = 1; i <= (int)ViewData["TotalPage"]; i++)
+                        {
+                            <a class='@((int)ViewData["CurrenPage"] == i ? "active":"")' href='/Home/Index/@ViewData["CurrentGenre"]/@i'>
+                                @i
+                            </a>
+                        }
+                    </div>
+                }*@
 
         </div>
     </div>
 
 </div>
-

@@ -25,43 +25,49 @@ namespace PRNFinalProject.Controllers
             MovieManager movieManager = new MovieManager();
             Movie movies = movieManager.GetMoivesById(Id);
 
-
-            //GenreManager genreManager = new GenreManager();
-            //ViewBag.Genres = genreManager.GetGenresById((int)movies.GenreId);
-
+            //caculator điểm movie
             RateManager rateManager = new RateManager();
             List<Rate> rate = rateManager.GetRateByMovieId(Id);
             double total = 0;
             foreach (Rate item in rate)
             {
-                total = (double)item.NumericRating;
+                total +=(double)item.NumericRating;
             }
             double NumericRating = total / rate.Count;
             ViewData["TotalPoits"] = NumericRating;
 
-
+            //display điểm
             ViewBag.Rates = rateManager.GetRateByMovieId(Id);
+
+            //display comment ornot
+            string user = HttpContext.Session.GetString("account");
+            if(user != null) { 
+            Person person = JsonConvert.DeserializeObject<Person>(user);
+            ViewBag.Admin = person.Type;
+            Rate rates = context.Rates.FirstOrDefault(x => x.PersonId.ToString().Equals(user) && x.MovieId == Id);
+            ViewBag.comment = rates;
+            }
             return View(movies);
         }
-
+        [HttpPost]
         public IActionResult AddComment(int Id, float points, string comment)
         {
             string user = HttpContext.Session.GetString("account");
             if (user != null)
             {
                 Person person = JsonConvert.DeserializeObject<Person>(user);
-                Rate rates = context.Rates.FirstOrDefault(x => x.PersonId.ToString().Equals(user) && x.MovieId == Id);
-
+                Rate rates = new Rate();
                 rates.PersonId = person.PersonId;
                 rates.MovieId = Id;
                 rates.NumericRating = points;
                 rates.Comment = comment;
                 rates.Time = DateTime.Now;
-                context.Rates.Update(rates);
+                context.Rates.Add(rates);
+                context.SaveChanges();
             }
-            context.SaveChanges();
+            
 
-            return RedirectToAction("DetailMovie", "Detail", new { Id = Id });  
+            return RedirectToAction("DetailMovie", "Detail", new {Id=Id});  
 
 
         }

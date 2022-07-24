@@ -25,5 +25,20 @@ namespace PRNFinalProject.Logics
                 return context.Rates.Include(p => p.Person).Where(m => m.MovieId == id).ToList();
             }
         }
+
+        internal static void DeleteRate(int id)
+        {
+            List<Rate> rates = new List<Rate>();
+            using (var context = new CenimaDBContext())
+            {
+                rates = context.Rates.Where(x => x.MovieId == id).ToList();
+                if (rates.Count > 0)
+                {
+                    context.Rates.RemoveRange(rates);
+
+                }
+                context.SaveChanges();
+            }
+        }
     }
 }
