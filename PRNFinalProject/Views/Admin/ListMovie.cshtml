@@ -221,13 +221,14 @@
                                     </div>
                                 </div>
                                 <!-- /.card-header -->
+                                <a asp-action="Create"><button type="button" class="btn btn-primary">Create new film</button></a>
                                 <div class="card-body table-responsive p-0">
                                     <table class="table table-hover text-nowrap">
                                         <thead>
                                             <tr>
                                                 <th>Title</th>
                                                 <th>Year</th>
-                                                <th>Gescription</th>
+
                                                 <th>Mark_Average</th>
                                                 <th>Type</th>
                                             </tr>
@@ -235,28 +236,41 @@
                                         <tbody>
                                             @foreach (Movie p in (List<Movie>)ViewData["movie"])
                                             {
-                                <tr>
-                                    <td>@p.Title</td>
-                                    <td>@p.Year</td>
-                                    <td>@p.Description</td>
-                                           @if(p.Rates.Sum(p1 => p1.NumericRating) < 1)
-                {
-<td>not yet</td>
-                }@if(p.Rates.Sum(p1 => p1.NumericRating) > 0) { 
-                                            <td>@p.Rates.Average(p1=>p1.NumericRating)</td>
-                }
-                                    <td>@p.Genre.Description</td>
+                                                <tr>
+                                                    <td>@p.Title</td>
+                                                    <td>@p.Year</td>
 
-                                    <td><form asp-action="ListUser" method="post" class="tag tag-success"><button type="submit" name="ids" value="@(p.MovieId)">Delete</button></form></td>
-                                </tr>}
+                                                    @if (p.Rates.Sum(p1 => p1.NumericRating) < 1)
+                                                    {
+                                                        <td>not yet</td>
+                                                    }@if (p.Rates.Sum(p1 => p1.NumericRating) > 0)
+                                                    {
+                                                        <td>@p.Rates.Average(p1 => p1.NumericRating)</td>
+                                                    }
+                                                    <td>@p.Genre.Description</td>
+
+                                                    <td>
+                                                        <a asp-action="Details" asp-route-id="@p.MovieId">
+                                                            <button type="button" class="btn btn-info">Details</button>
+                                                        </a>
+                                                        <a asp-action="Edit" asp-route-id="@p.MovieId">
+                                                            <button type="button" class="btn btn-secondary">Edit</button>
+                                                        </a>
+                                                        <a asp-action="Delete" asp-route-id="@p.MovieId">
+                                                            <button type="button" class="btn btn-danger">Delete</button>
+                                                        </a>
+                                                        
+                                                    </td>
+                                            </tr>
+}
                                         </tbody>
                                     </table>
                                     <script>
                                         for (let i = 0; i < document.getElementsByName("ids").length; i++) {
                                             document.getElementsByName("ids")[i].onclick = function (e) {
-                                                var c=confirm("Are you sure?");
-                                                if(!c)
-                                                e.preventDefault();
+                                                var c = confirm("Are you sure?");
+                                                if (!c)
+                                                    e.preventDefault();
                                             }
                                         }
                                     </script>
@@ -320,9 +334,7 @@
     <!-- AdminLTE App -->
     <script src="AdminLTE-3.2.0/dist/js/adminlte.js"></script>
     <script src="~/AdminLTE-3.2.0/dist/js/adminlte.js"></script>
-    <!-- AdminLTE for demo purposes -->
-    <script src="AdminLTE-3.2.0/dist/js/demo.js"></script>
-    <script src="~/AdminLTE-3.2.0/dist/js/demo.js"></script>
+
     <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
     <script src="AdminLTE-3.2.0/dist/js/pages/dashboard.js"></script>
     <script src="~/AdminLTE-3.2.0/dist/js/pages/dashboard.js"></script>

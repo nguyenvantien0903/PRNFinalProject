@@ -221,35 +221,44 @@
                                     </div>
                                 </div>
                                 <!-- /.card-header -->
+                                <a asp-action="CreateGenre"><button type="button" class="btn btn-primary">Create new Genre</button></a>
                                 <div class="card-body table-responsive p-0">
                                     <table class="table table-hover text-nowrap">
                                         <thead>
                                             <tr>
-                                                
+
                                                 <th>GenId</th>
                                                 <th>Gescription</th>
-                                                
+
                                             </tr>
                                         </thead>
                                         <tbody>
                                             @foreach (Genre p in (List<Genre>)ViewData["gen"])
                                             {
-                                <tr>
-                                    
-                                    <td>@p.GenreId</td>
-                                    <td>@p.Description</td>
+                                                <tr>
 
-                                    <td><form asp-action="ListGen" method="post" class="tag tag-success"><button type="submit" name="ids" value="@(p.GenreId)">Delete</button></form></td>
-                                </tr>
-}
+                                                    <td>@p.GenreId</td>
+                                                    <td>@p.Description</td>
+
+                                                    <td>
+                                                        <a asp-action="EditGenre" asp-route-id="@p.GenreId">
+                                                            <button type="button" class="btn btn-secondary">Edit</button>
+                                                        </a>
+
+                                                        <form asp-action="ListGen" method="post" class="tag tag-success">
+                                                            <button type="submit" class="btn btn-danger" name="ids" value="@(p.GenreId)">Delete</button>
+                                                        </form>
+                                                    </td>
+                                                </tr>
+                                            }
                                         </tbody>
                                     </table>
                                     <script>
                                         for (let i = 0; i < document.getElementsByName("ids").length; i++) {
                                             document.getElementsByName("ids")[i].onclick = function (e) {
-                                                var c=confirm("Are you sure?");
-                                                if(!c)
-                                                e.preventDefault();
+                                                var c = confirm("Are you sure?");
+                                                if (!c)
+                                                    e.preventDefault();
                                             }
                                         }
                                     </script>
@@ -313,9 +322,7 @@
     <!-- AdminLTE App -->
     <script src="AdminLTE-3.2.0/dist/js/adminlte.js"></script>
     <script src="~/AdminLTE-3.2.0/dist/js/adminlte.js"></script>
-    <!-- AdminLTE for demo purposes -->
-    <script src="AdminLTE-3.2.0/dist/js/demo.js"></script>
-    <script src="~/AdminLTE-3.2.0/dist/js/demo.js"></script>
+
     <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
     <script src="AdminLTE-3.2.0/dist/js/pages/dashboard.js"></script>
     <script src="~/AdminLTE-3.2.0/dist/js/pages/dashboard.js"></script>

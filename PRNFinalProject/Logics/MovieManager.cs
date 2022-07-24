@@ -68,7 +68,7 @@ namespace PRNFinalProject.Logics
         {
             using (var context = new CenimaDBContext())
             {
-                    return context.Movies.Include(x=>x.Genre).Where(m => m.MovieId == ID).FirstOrDefault();
+                    return context.Movies.Include(x=>x.Genre).Include(r=>r.Rates).Where(m => m.MovieId == ID).FirstOrDefault();
             }
         }
 

@@ -218,5 +218,94 @@ namespace PRNFinalProject.Controllers
             c.SaveChanges();
             return RedirectToAction("ListGen");
         }
+
+        public IActionResult Delete(int Id)
+        {
+            Movie movie = c.Movies.Include(m => m.Genre).Where(m => m.MovieId == Id).FirstOrDefault();
+            return View(movie);
+        }
+
+        [HttpPost]
+        public IActionResult Delete(Movie movie)
+        {
+            c.Attach(movie);
+            c.Entry(movie).State = EntityState.Deleted;
+            c.SaveChanges();
+            return RedirectToAction("ListMovie");
+        }
+
+        public IActionResult Create()
+        {
+            ViewData["Genres"] = new SelectList(c.Genres, "GenreId", "Description");
+            Movie movie = new Movie();
+            return View(movie);
+        }
+
+        [HttpPost]
+        public IActionResult Create(Movie movie)
+        {
+            ViewData["Genres"] = new SelectList(c.Genres, "GenreId", "Description");
+            /*var id = c.Movies.Max(m => m.MovieId);
+            movie.MovieId = id;*/
+            c.Attach(movie);
+            c.Entry(movie).State = EntityState.Added;
+            c.SaveChanges();
+            return RedirectToAction("ListMovie");
+        }
+
+        [HttpGet]
+        public IActionResult Edit(int Id)
+        {
+            ViewData["Genres"] = new SelectList(c.Genres, "GenreId", "Description");
+            Movie movie = c.Movies.Include(m => m.Genre).Where(m => m.MovieId == Id).FirstOrDefault();
+            return View(movie);
+        }
+
+        [HttpPost]
+        public IActionResult Edit(Movie movie)
+        {
+            ViewData["Genres"] = new SelectList(c.Genres, "GenreId", "Description");
+            c.Attach(movie);
+            c.Entry(movie).State = EntityState.Modified;
+            c.SaveChanges();
+            return RedirectToAction("ListMovie");
+        }
+
+        public IActionResult Details(int Id)
+        {
+            Movie movie = c.Movies.Include(g=>g.Genre).Where(m => m.MovieId == Id).FirstOrDefault();
+            return View(movie);
+        }
+
+        public IActionResult CreateGenre()
+        {
+
+            Genre genre = new Genre();
+            return View(genre);
+        }
+
+        [HttpPost]
+        public IActionResult CreateGenre(Genre genre)
+        {
+            c.Attach(genre);
+            c.Entry(genre).State = EntityState.Added;
+            c.SaveChanges();
+            return RedirectToAction("ListGen");
+        }
+
+        public IActionResult EditGenre(int Id)
+        {
+            Genre genre = c.Genres.Where(m => m.GenreId == Id).FirstOrDefault();
+            return View(genre);
+        }
+
+        [HttpPost]
+        public IActionResult EditGenre(Genre genre)
+        {
+            c.Attach(genre);
+            c.Entry(genre).State = EntityState.Modified;
+            c.SaveChanges();
+            return RedirectToAction("ListGen");
+        }
     }
 }
