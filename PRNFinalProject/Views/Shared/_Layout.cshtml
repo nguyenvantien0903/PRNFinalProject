@@ -1,17 +1,40 @@
-﻿<!DOCTYPE html>
+﻿
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - PRNFinalProject</title>
+    <title>@ViewData["Title"] - Phim Hay</title>
+    <!--Fontawesome CDN-->
+
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <style>
+        .active {
+            font-size: large;
+            color: darkblue;
+            font-weight: bold;
+        }
+
+        .divider:after,
+        .divider:before {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background: #eee;
+        }
+
+        .h-custom {
+            height: calc(100% - 73px);
+        }
+    </style>
 </head>
 <body>
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">PRNFinalProject</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Phim Hay</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -26,6 +49,33 @@
                         </li>
                     </ul>
                 </div>
+                <form class="form-inline my-2 my-lg-0">
+                    <div class="input-group input-group-sm">
+                        <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" placeholder="Search...">
+                        <div class="input-group-append">
+                            <button type="button" class="btn btn-secondary btn-number">
+                                <i class="fa fa-search" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    </div>
+                  
+                    @if (HttpContextAccessor.HttpContext.Session.GetString("account") == null)
+                    {
+                        <a asp-area="" asp-controller="Security" asp-action="Login" class="btn btn-success btn-sm ml-3">
+                            <i class="fa fa-sign-in"></i> Đăng nhập
+                        </a>
+                    }
+                    @if (HttpContextAccessor.HttpContext.Session.GetString("account") != null)
+                    {
+
+                        <a class="btn btn-success btn-sm ml-3" asp-controller="Security" asp-action="Logout">
+                            <i class="fa fa-sign-out"></i> Đăng xuất
+                        </a>
+                        <a class="btn btn-success btn-sm ml-3" href="login.html">
+                            <i class="fa fa-sign-out"></i> Hello 
+                        </a>
+                    }
+                </form>
             </div>
         </nav>
     </header>

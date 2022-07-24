@@ -1,8 +1,72 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
+@model List<Movie>
+<div class="container">
+    <div class="row">
+        <div class="col-12 col-sm-3">
+            <div class="card bg-light mb-3">
+                <div class="card-header bg-primary text-white text-uppercase"><a href="/Home/Index"><i class="fa fa-list"></i>Thể Loại</a></div>
+                <ul class="list-group category_block">
+                    @foreach (Genre g in ViewBag.Genres)
+                    {
+                        <li class="list-group-item"><a href="/Home/Index/@g.GenreId">@g.Description</a></li>
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+                    }
+                </ul>
+            </div>
+            <div class="card bg-light mb-3">
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="row">
+                @if (Model.Count == 0)
+                {
+                    <p>Khong co Movie nao</p>
+                }
+                else
+                {
+                    @foreach (Movie item in Model)
+                    {
+                        <div class="col-12 col-md-6 col-lg-4">
+                            <div class="card">
+                                <img src="~/img/@item.Image" alt="Card image cap">
+                                <div class="card-body">
+                                    <h4 class="card-title"><a asp-area="" asp-controller="Detail" asp-action="DetailMovie" asp-route-Id="@item.MovieId" title="View Product">@item.Title</a></h4>
+                                    <p class="card-text">Năm: @item.Year</p>
+                                    <p class="card-text">Loại: @item.Genre.Description</p>
+                                    @if (ViewBag.rates.ContainsKey(item.MovieId))
+                                    {
+                                        <p class="card-text">Điểm: @ViewBag.rates[item.MovieId]</p>
+                                    }
+
+
+                                    <div class="row">
+                                        <div class="col">
+                                            <a class="nav-link btn btn-success btn-block">Đánh giá</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+            @if ((int)ViewData["TotalPage"] > 1)
+            {
+                <div style="border-radius:10px;">
+                    @for (int i = 1; i <= (int)ViewData["TotalPage"]; i++)
+                    {
+                        <a class='@((int)ViewData["CurrenPage"] == i ? "active":"")' href='/Home/Index/@ViewData["CurrentGenre"]/@i'>
+                            @i
+                        </a>
+                    }
+                </div>
+            }
+
+        </div>
+    </div>
+
 </div>
+

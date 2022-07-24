@@ -18,14 +18,25 @@ namespace PRNFinalProject.Models
         [Key]
         [Column("PersonID")]
         public int PersonId { get; set; }
+        [Required(ErrorMessage = "This field is required")]
         [StringLength(200)]
         public string Fullname { get; set; }
+
+        [Required(ErrorMessage = "This field is required")]
         [StringLength(10)]
         public string Gender { get; set; }
         [StringLength(50)]
+
+        [Required(ErrorMessage = "This field is required")]
         public string Email { get; set; }
+
+        
+        [Required(ErrorMessage = "This field is required")]
         [StringLength(100)]
         public string Password { get; set; }
+        [DataType(DataType.Password)]
+        [Compare("Password",ErrorMessage = "Comfirm password doesn't mathc, type again !")]
+
         public int? Type { get; set; }
         public bool? IsActive { get; set; }
 
