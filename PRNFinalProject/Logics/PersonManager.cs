@@ -9,6 +9,14 @@ namespace PRNFinalProject.Logics
 {
     public class PersonManager
     {
+        public List<Person> GetAllPerson()
+        {
+            using (var context = new CenimaDBContext())
+            {
+                return context.Persons.ToList();
+            }
+        }
+
         public Person GetPersonByMovieId(int ID)
         {
             using (var context = new CenimaDBContext())

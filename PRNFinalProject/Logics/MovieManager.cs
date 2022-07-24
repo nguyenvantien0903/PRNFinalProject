@@ -10,6 +10,14 @@ namespace PRNFinalProject.Logics
 {
     public class MovieManager
     {
+        public List<Movie> GetAllMovie()
+        {
+            using (var context = new CenimaDBContext())
+            {
+                return context.Movies.ToList();
+            }
+        }
+
         public List<Movie> GetAllMovie(int GenreID)
         {
             using (var context = new CenimaDBContext())

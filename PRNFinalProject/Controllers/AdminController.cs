@@ -2,27 +2,197 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using PRNFinalProject.Data;
+using PRNFinalProject.Logics;
 using PRNFinalProject.Models;
 
 namespace PRNFinalProject.Controllers
 {
     public class AdminController : Controller
     {
-        private readonly CenimaDBContext _context;
-
-        public AdminController(CenimaDBContext context)
+        private readonly CenimaDBContext c;
+        public AdminController(CenimaDBContext c)
         {
-            _context = context;
+            this.c = c;
         }
-
-        // GET: Admin
-        public async Task<IActionResult> ListUser()
+        public IActionResult Index()
         {
-            return View(await _context.Persons.ToListAsync());
+            MovieManager movieManagement = new MovieManager();
+            ViewBag.Movie = movieManagement.GetAllMovie();
+            PersonManager PersonManagement = new PersonManager();
+            ViewBag.Person = PersonManagement.GetAllPerson();
+            return View();
+        }
+        // Admin/Rate
+        public IActionResult Rate()
+        {
+            MovieManager movieManagement = new MovieManager();
+            ViewBag.Movie = movieManagement.GetAllMovie();
+            PersonManager PersonManagement = new PersonManager();
+            ViewBag.Person = PersonManagement.GetAllPerson();
+            RateManager rate = new RateManager();
+            ViewBag.rate = rate.GetAllRate();
+            return View();
+        }
+        public IActionResult ListUser()
+        {
+            //check session
+            if (HttpContext.Session.GetString("admin") != null)
+            {
+                if (HttpContext.Session.GetString("user") != null)
+                {
+                    HttpContext.Session.Remove("user");
+                }
+            }
+            else
+            {//trả về trang login
+                return RedirectToAction("Login", "Home");
+            }
+
+            //list tổng quan
+            ViewData["tgen"] = c.Genres.Count();
+            ViewData["tmovie"] = c.Movies.Count();
+            ViewData["tuser"] = c.Persons.Count();
+            ViewData["trate"] = c.Rates.Count();
+            //
+            ViewData["user"] = c.Persons.Where(p => p.Type == 2).ToList();
+            return View();
+        }
+        [HttpPost]
+        public IActionResult ListUser(string statusid)
+        {
+            string[] n = statusid.Split('-');
+            //list tổng quan
+
+            Person p1 = c.Persons.FirstOrDefault(p => p.PersonId == Int32.Parse(n[1]));
+            //
+            if (n[0].Equals("Enable"))
+            {
+                p1.IsActive = true;
+                c.Persons.Update(p1);
+            }
+            else if (n[0].Equals("Disable"))
+            {
+                p1.IsActive = false;
+                c.Persons.Update(p1);
+            }
+            c.SaveChanges();
+            return RedirectToAction("ListUser");
+        }
+        public IActionResult ListMovie()
+        {
+            //check session
+            if (HttpContext.Session.GetString("admin") != null)
+            {
+                if (HttpContext.Session.GetString("user") != null)
+                {
+                    HttpContext.Session.Remove("user");
+                }
+            }
+            else
+            {//trả về trang login
+                return RedirectToAction("Login", "Home");
+            }
+            //list tổng quan
+            ViewData["tgen"] = c.Genres.Count();
+            ViewData["tmovie"] = c.Movies.Count();
+            ViewData["tuser"] = c.Persons.Count();
+            ViewData["trate"] = c.Rates.Count();
+            //
+            ViewData["gen"] = c.Genres.ToList();
+            ViewData["movie"] = c.Movies.Include(p => p.Genre).Include(p => p.Rates).ToList();
+            return View();
+        }
+        [HttpPost]
+        public IActionResult ListMovie(string ids)
+        {
+            //check session
+            if (HttpContext.Session.GetString("admin") != null)
+            {
+                if (HttpContext.Session.GetString("user") != null)
+                {
+                    HttpContext.Session.Remove("user");
+                }
+            }
+            else
+            {//trả về trang login
+                return RedirectToAction("Login", "Home");
+            }
+            c.Genres.Remove(c.Genres.FirstOrDefault(p => p.GenreId == Int32.Parse(ids)));
+            c.SaveChanges();
+            return RedirectToAction("ListMovie");
+        }
+        public IActionResult ListGen()
+        {
+            //check session
+            if (HttpContext.Session.GetString("admin") != null)
+            {
+                if (HttpContext.Session.GetString("user") != null)
+                {
+                    HttpContext.Session.Remove("user");
+                }
+            }
+            else
+            {//trả về trang login
+                return RedirectToAction("Login", "Home");
+            }
+            //list tổng quan
+            ViewData["tgen"] = c.Genres.Count();
+            ViewData["tmovie"] = c.Movies.Count();
+            ViewData["tuser"] = c.Persons.Count();
+            ViewData["trate"] = c.Rates.Count();
+            //
+            ViewData["gen"] = c.Genres.ToList();
+            return View();
+        }
+        public IActionResult AddGen(string des)
+        {
+            //check session
+            if (HttpContext.Session.GetString("admin") != null)
+            {
+                if (HttpContext.Session.GetString("user") != null)
+                {
+                    HttpContext.Session.Remove("user");
+                }
+            }
+            else
+            {//trả về trang login
+                return RedirectToAction("Login", "Home");
+            }
+            c.Genres.Add(new Models.Genre { Description = des });
+            c.SaveChanges();
+            return RedirectToAction("ListGen");
+        }
+        [HttpPost]
+        public IActionResult ListGen(string ids)
+        {
+            c.Genres.Remove(c.Genres.FirstOrDefault(p => p.GenreId == Int32.Parse(ids)));
+            c.SaveChanges();
+            return RedirectToAction("ListGen");
+        }
+        public IActionResult UpdateGen(string id, string des)
+        {
+            //check session
+            if (HttpContext.Session.GetString("admin") != null)
+            {
+                if (HttpContext.Session.GetString("user") != null)
+                {
+                    HttpContext.Session.Remove("user");
+                }
+            }
+            else
+            {//trả về trang login
+                return RedirectToAction("Login", "Home");
+            }
+            Genre g = c.Genres.FirstOrDefault(p => p.GenreId == Int32.Parse(id));
+            g.Description = des;
+            c.Genres.Update(g);
+            c.SaveChanges();
+            return RedirectToAction("ListGen");
         }
     }
 }
