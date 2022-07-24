@@ -84,7 +84,7 @@
                         }
                         </ul>
                 </div>
-                <form class="form-inline my-2 my-lg-0">
+              <form asp-controller="Home" asp-action="SearchMovie" method="post" class="form-inline my-2 my-lg-0">
                     @if (HttpContextAccessor.HttpContext.Session.GetString("account") != null)
                     {
 
@@ -95,15 +95,15 @@
                         </div>
 
                     }
-                    <div class="input-group input-group-sm">
-                        <input asp-controller="Movie" asp-action="SearchMovie" name="search" type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" placeholder="Search...">
+                <div class="input-group input-group-sm">
+                        <input name="search" type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" placeholder="Search...">
                         <div class="input-group-append">
-                            <button type="button" class="btn btn-primary btn-number">
+                            <button type="submit" class="btn btn-primary btn-number">
                                 <i class="fas fa-search" aria-hidden="true"></i>
 
                             </button>
                         </div>
-                    </div>
+                </div>
 
                     @if (HttpContextAccessor.HttpContext.Session.GetString("account") == null)
                     {
@@ -177,9 +177,7 @@
       
     <script src="AdminLTE-3.2.0/dist/js/adminlte.js"></script>
     <script src="~/AdminLTE-3.2.0/dist/js/adminlte.js"></script>
-      
-    <script src="AdminLTE-3.2.0/dist/js/demo.js"></script>
-    <script src="~/AdminLTE-3.2.0/dist/js/demo.js"></script>
+     
     
     <script src="AdminLTE-3.2.0/dist/js/pages/dashboard.js"></script>
     <script src="~/AdminLTE-3.2.0/dist/js/pages/dashboard.js"></script>

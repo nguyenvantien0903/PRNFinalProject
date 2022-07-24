@@ -32,9 +32,6 @@ namespace PRNFinalProject.Controllers
             GenreManager genreManager = new GenreManager();
             ViewBag.Genres = genreManager.GetAllGenres();
             //lay danh sacsh theo genre
-            if (Page <= 0)
-                Page = 1;
-            int PageSize = 3;
 
 
             MovieManager movieManager = new MovieManager();
@@ -66,6 +63,38 @@ namespace PRNFinalProject.Controllers
             ViewData["CurrenPage"] = Page;
             ViewData["CurrentGenre"] = Id;*/
             return View(movies);
+        }
+
+        public IActionResult SearchMovie()
+        {
+            //lay danh sach tat ca cac genres
+            GenreManager genreManager = new GenreManager();
+            ViewBag.Genres = genreManager.GetAllGenres();
+            //lay danh sacsh theo genre
+
+
+            MovieManager movieManager = new MovieManager();
+            string search = Request.Form["search"];
+            List<Movie> movies = movieManager.SearchMovieByName(search);
+            /*List<Movie> movies = movieManager.GetMoives(Id, (Page - 1) * PageSize + 1, PageSize);*/
+
+
+            Dictionary<int, double> listr = new Dictionary<int, double>();
+            RateManager rateManager = new RateManager();
+            foreach (Movie m in movies)
+            {
+                List<Rate> rate = rateManager.GetRateByMovieId(m.MovieId);
+                double total = 0;
+                foreach (Rate item in rate)
+                {
+                    total += (double)item.NumericRating;
+                }
+                double NumericRating = total / rate.Count;
+                listr.Add(m.MovieId, NumericRating);
+            }
+            ViewBag.rates = listr;
+
+            return View("Index",movies);
         }
     }
 }

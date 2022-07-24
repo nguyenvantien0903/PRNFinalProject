@@ -47,6 +47,10 @@ namespace PRNFinalProject.Controllers
         [HttpPost]
         public IActionResult AddComment(int Id)
         {
+            if (HttpContext.Session.GetString("account") == null)
+            {
+                return RedirectToAction("Login", "Security");
+            }
             string user = HttpContext.Session.GetString("account");
             if (user != null)
             {
@@ -76,5 +80,7 @@ namespace PRNFinalProject.Controllers
 
             return RedirectToAction("DetailMovie", "Detail", new { Id = Id });  
         }
+
+       
     }
 }

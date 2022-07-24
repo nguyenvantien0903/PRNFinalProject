@@ -72,14 +72,13 @@ namespace PRNFinalProject.Logics
             }
         }
 
-        /*public List<Movie> SearchMovie()
+        public List<Movie> SearchMovieByName(string name)
         {
             using (var context = new CenimaDBContext())
             {
-                string word = HttpRequest
-                return context.Movies.Where(m => m.Title.Contains(word)).ToList();
+                return context.Movies.Include(g=>g.Genre).Where(m => m.Title.Contains(name)).ToList();
             }
-        }*/
+        }
     }
 }
 

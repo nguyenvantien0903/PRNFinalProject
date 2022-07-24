@@ -61,16 +61,16 @@ namespace PRNFinalProject.Controllers
                 }
             }
             else
-            {//trả về trang login
+            {
                 return RedirectToAction("Login", "Security");
             }
           
-            //list tổng quan
+            
             ViewData["tgen"] = c.Genres.Count();
             ViewData["tmovie"] = c.Movies.Count();
             ViewData["tuser"] = c.Persons.Count();
             ViewData["trate"] = c.Rates.Count();
-            //
+            
             ViewData["user"] = c.Persons.Where(p => p.Type == 2).ToList();
             return View();
         }
@@ -82,10 +82,10 @@ namespace PRNFinalProject.Controllers
                 return RedirectToAction("Login", "Security");
             }
             string[] n = statusid.Split('-');
-            //list tổng quan
+            
 
             Person p1 = c.Persons.FirstOrDefault(p => p.PersonId == Int32.Parse(n[1]));
-            //
+            
             if (n[0].Equals("Enable"))
             {
                 p1.IsActive = true;
@@ -105,7 +105,7 @@ namespace PRNFinalProject.Controllers
             {
                 return RedirectToAction("Login", "Security");
             }
-            //check session
+            
             if (HttpContext.Session.GetString("admin") != null)
             {
                 if (HttpContext.Session.GetString("user") != null)
@@ -114,10 +114,10 @@ namespace PRNFinalProject.Controllers
                 }
             }
             else
-            {//trả về trang login
+            {
                 return RedirectToAction("Login", "Security");
             }
-            //list tổng quan
+            
             ViewData["tgen"] = c.Genres.Count();
             ViewData["tmovie"] = c.Movies.Count();
             ViewData["tuser"] = c.Persons.Count();
@@ -210,7 +210,7 @@ namespace PRNFinalProject.Controllers
             }
             else
             {//trả về trang login
-                return RedirectToAction("Login", "Home");
+                return RedirectToAction("Login", "Security");
             }
             Genre g = c.Genres.FirstOrDefault(p => p.GenreId == Int32.Parse(id));
             g.Description = des;
