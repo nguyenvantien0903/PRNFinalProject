@@ -52,7 +52,7 @@ namespace PRNFinalProject
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{Id=0}/{Page=1}");
+                    pattern: "{controller=Home}/{action=Index}/{Id=0}/{points?}/{comment?}");
             });
         }
     }

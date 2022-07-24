@@ -6,15 +6,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="AdminLTE-3.2.0\.github\codeql\codeql-config.yml" />
-    <None Include="AdminLTE-3.2.0\.github\CONTRIBUTING.md" />
-    <None Include="AdminLTE-3.2.0\.github\dependabot.yml" />
-    <None Include="AdminLTE-3.2.0\.github\ISSUE_TEMPLATE\bug-report-for-adminlte-v3.1-x.md" />
-    <None Include="AdminLTE-3.2.0\.github\ISSUE_TEMPLATE\feature-request-for-adminlte-v4-x.md" />
-    <None Include="AdminLTE-3.2.0\.github\workflows\ci.yml" />
-    <None Include="AdminLTE-3.2.0\.github\workflows\codeql.yml" />
-    <None Include="AdminLTE-3.2.0\.github\workflows\docs.yml" />
-    <None Include="AdminLTE-3.2.0\.github\workflows\lint.yml" />
+    <Compile Remove="AdminLTE-3.2.0\**" />
+    <Content Remove="AdminLTE-3.2.0\**" />
+    <EmbeddedResource Remove="AdminLTE-3.2.0\**" />
+    <None Remove="AdminLTE-3.2.0\**" />
   </ItemGroup>
 
   <ItemGroup>

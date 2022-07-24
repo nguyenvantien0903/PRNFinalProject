@@ -44,26 +44,37 @@ namespace PRNFinalProject.Controllers
             return View(movies);
         }
 
-        public IActionResult AddComment(int Id, float points, string comment)
+        [HttpPost]
+        public IActionResult AddComment(int Id)
         {
             string user = HttpContext.Session.GetString("account");
             if (user != null)
             {
                 Person person = JsonConvert.DeserializeObject<Person>(user);
-                Rate rates = context.Rates.FirstOrDefault(x => x.PersonId.ToString().Equals(user) && x.MovieId == Id);
-
-                rates.PersonId = person.PersonId;
-                rates.MovieId = Id;
-                rates.NumericRating = points;
-                rates.Comment = comment;
-                rates.Time = DateTime.Now;
-                context.Rates.Update(rates);
+                Rate rates = context.Rates.FirstOrDefault(x => (x.PersonId.Equals(person.PersonId) && x.MovieId == Id));
+                if(rates == null)
+                {
+                    rates = new Rate();
+                    rates.PersonId = person.PersonId;
+                    rates.MovieId = Id;
+                    rates.NumericRating = double.Parse(Request.Form["points"]);
+                    rates.Comment = Request.Form["comment"];
+                    rates.Time = DateTime.Now;
+                    context.Rates.Add(rates);
+                }
+                else
+                {
+                    rates.PersonId = person.PersonId;
+                    rates.MovieId = Id;
+                    rates.NumericRating = double.Parse(Request.Form["points"]);
+                    rates.Comment = Request.Form["comment"];
+                    rates.Time = DateTime.Now;
+                    context.Rates.Update(rates);
+                }
             }
             context.SaveChanges();
 
             return RedirectToAction("DetailMovie", "Detail", new { Id = Id });  
-
-
         }
     }
 }

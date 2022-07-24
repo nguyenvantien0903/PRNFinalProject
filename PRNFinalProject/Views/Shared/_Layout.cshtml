@@ -50,15 +50,26 @@
                     </ul>
                 </div>
                 <form class="form-inline my-2 my-lg-0">
+                    @if (HttpContextAccessor.HttpContext.Session.GetString("account") != null)
+                    {
+
+                        Person account = JsonConvert.DeserializeObject<Person>(HttpContextAccessor.HttpContext.Session.GetString("account"));
+
+                        <div>
+                            <i class="fa fa-sign-out"></i> Hello @account.Fullname  
+                        </div>
+
+                    }
                     <div class="input-group input-group-sm">
                         <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" placeholder="Search...">
                         <div class="input-group-append">
-                            <button type="button" class="btn btn-secondary btn-number">
-                                <i class="fa fa-search" aria-hidden="true"></i>
+                            <button type="button" class="btn btn-primary btn-number">
+                                <i class="fas fa-search" aria-hidden="true"></i>
+
                             </button>
                         </div>
                     </div>
-                  
+
                     @if (HttpContextAccessor.HttpContext.Session.GetString("account") == null)
                     {
                         <a asp-area="" asp-controller="Security" asp-action="Login" class="btn btn-success btn-sm ml-3">
@@ -68,13 +79,15 @@
                     @if (HttpContextAccessor.HttpContext.Session.GetString("account") != null)
                     {
 
+                        Person account = JsonConvert.DeserializeObject<Person>(HttpContextAccessor.HttpContext.Session.GetString("account"));
+
                         <a class="btn btn-success btn-sm ml-3" asp-controller="Security" asp-action="Logout">
                             <i class="fa fa-sign-out"></i> Đăng xuất
                         </a>
-                        <a class="btn btn-success btn-sm ml-3" href="login.html">
-                            <i class="fa fa-sign-out"></i> Hello 
-                        </a>
+                       
+
                     }
+
                 </form>
             </div>
         </nav>
