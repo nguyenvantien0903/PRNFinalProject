@@ -31,6 +31,14 @@ namespace PRNFinalProject.Controllers
             {
                 Person account = context.Persons.FirstOrDefault(x => x.Email.Equals(person.Email) && x.Password.Equals(person.Password));
                 HttpContext.Session.SetString("account", JsonConvert.SerializeObject(account));
+                if(account.Type == 1)
+                {
+                    HttpContext.Session.SetString("admin", "true");
+                }
+                else
+                {
+                    HttpContext.Session.SetString("user", "true");
+                }
                 return RedirectToAction("Index", "Home");
             }
             else
