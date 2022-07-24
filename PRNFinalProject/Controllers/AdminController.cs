@@ -1,7 +1,11 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using PRNFinalProject.Logic;
+using PRNFinalProject.Data;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -13,21 +17,21 @@ using PRNFinalProject.Models;
 namespace PRNFinalProject.Controllers
 {
     public class AdminController : Controller
-    {
+    {   
         private readonly CenimaDBContext c;
         public AdminController(CenimaDBContext c)
         {
             this.c = c;
         }
         public IActionResult Index()
-        {
+        { 
             MovieManager movieManagement = new MovieManager();
             ViewBag.Movie = movieManagement.GetAllMovie();
             PersonManager PersonManagement = new PersonManager();
             ViewBag.Person = PersonManagement.GetAllPerson();
             return View();
         }
-        // Admin/Rate
+       // Admin/Rate
         public IActionResult Rate()
         {
             MovieManager movieManagement = new MovieManager();
@@ -52,7 +56,7 @@ namespace PRNFinalProject.Controllers
             {//trả về trang login
                 return RedirectToAction("Login", "Home");
             }
-
+          
             //list tổng quan
             ViewData["tgen"] = c.Genres.Count();
             ViewData["tmovie"] = c.Movies.Count();

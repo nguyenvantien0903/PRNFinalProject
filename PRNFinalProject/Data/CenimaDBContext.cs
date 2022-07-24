@@ -4,7 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.Extensions.Configuration;
 using PRNFinalProject.Models;
-
+using Microsoft.Extensions.Configuration;
+using System.IO;
 #nullable disable
 
 namespace PRNFinalProject.Data
@@ -25,6 +26,7 @@ namespace PRNFinalProject.Data
         public virtual DbSet<Person> Persons { get; set; }
         public virtual DbSet<Rate> Rates { get; set; }
 
+       
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             var builder = new ConfigurationBuilder()
