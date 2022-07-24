@@ -13,7 +13,15 @@
     }
 </style>
 
-<h1>Index</h1>
+<h1>Thể loại</h1>
+<ul>
+    @foreach(var item in ViewBag.Genres)
+            {
+                <li>
+                    @item.Description
+                </li>
+            }
+</ul>
 
 <p>
     <a asp-action="Create">Create New</a>

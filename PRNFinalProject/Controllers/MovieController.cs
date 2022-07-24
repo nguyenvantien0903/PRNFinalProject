@@ -21,6 +21,7 @@ namespace PRNFinalProject.Controllers
 
         public IActionResult Index()
         {
+            ViewBag.Genres = _context.Genres;
             List<Movie> movies = _context.Movies.Include(m => m.Genre).Include(m => m.Rates).ToList();
             return View(movies);
         }
