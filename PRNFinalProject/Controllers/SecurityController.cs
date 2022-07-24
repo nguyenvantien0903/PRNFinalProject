@@ -68,6 +68,8 @@ namespace PRNFinalProject.Controllers
             }
             else
             {
+                person.Type = 2;
+                person.IsActive = true;
                 context.Persons.Add(person);
                 context.SaveChanges();
 
