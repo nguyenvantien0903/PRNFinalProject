@@ -38,32 +38,33 @@ namespace PRNFinalProject.Controllers
 
 
             MovieManager movieManager = new MovieManager();
-            List<Movie> movies = movieManager.GetMoives(Id, (Page - 1) * PageSize + 1, PageSize);
+            List<Movie> movies = movieManager.GetAllMovie(Id);
+            /*List<Movie> movies = movieManager.GetMoives(Id, (Page - 1) * PageSize + 1, PageSize);*/
 
 
             Dictionary<int, double> listr = new Dictionary<int, double>();
             RateManager rateManager = new RateManager();
-            foreach(Movie m in movies)
+            foreach (Movie m in movies)
             {
-            List<Rate> rate = rateManager.GetRateByMovieId(m.MovieId);
-            double total = 0;
-            foreach (Rate item in rate)
-            {
-                total =(double)item.NumericRating;
-            }
-            double NumericRating = total / rate.Count;
-                listr.Add(m.MovieId, NumericRating);       
+                List<Rate> rate = rateManager.GetRateByMovieId(m.MovieId);
+                double total = 0;
+                foreach (Rate item in rate)
+                {
+                    total += (double)item.NumericRating;
+                }
+                double NumericRating = total / rate.Count;
+                listr.Add(m.MovieId, NumericRating);
             }
             ViewBag.rates = listr;
 
 
             //lay cac du lieu de hien thi dc thanh pager
-            int TotalMovie = movieManager.GetNumberOfMovies(Id);
+            /*int TotalMovie = movieManager.GetNumberOfMovies(Id);
             int TotalPage = TotalMovie / PageSize;
             if (TotalMovie % PageSize != 0) TotalPage++;
             ViewData["TotalPage"] = TotalPage;
             ViewData["CurrenPage"] = Page;
-            ViewData["CurrentGenre"] = Id;
+            ViewData["CurrentGenre"] = Id;*/
             return View(movies);
         }
     }

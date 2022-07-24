@@ -34,7 +34,7 @@ namespace PRNFinalProject.Controllers
             double total = 0;
             foreach (Rate item in rate)
             {
-                total = (double)item.NumericRating;
+                total += (double)item.NumericRating;
             }
             double NumericRating = total / rate.Count;
             ViewData["TotalPoits"] = NumericRating;

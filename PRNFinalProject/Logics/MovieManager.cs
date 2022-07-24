@@ -10,6 +10,20 @@ namespace PRNFinalProject.Logics
 {
     public class MovieManager
     {
+        public List<Movie> GetAllMovie(int GenreID)
+        {
+            using (var context = new CenimaDBContext())
+            {
+                if (GenreID == 0)
+                {
+                    return context.Movies.Include(g => g.Genre).ToList();
+                }
+                else
+                {
+                    return context.Movies.Include(g => g.Genre).Where(x => x.GenreId == GenreID).ToList();
+                }
+            }
+        }
 
         //GetMovie by GenreId
         public List<Movie> GetMoives(int GenreID, int Offset, int Count)
